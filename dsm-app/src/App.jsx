@@ -2,9 +2,10 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ConfigProvider } from "antd";
 import { AuthProvider } from "./context/AuthContext";
 import "./App.css";
-import LoginStep1 from "./pages/LoginStep1";
-import LoginStep2 from "./pages/LoginStep2";
-import Dashboard from "./module/dashboard";
+import { lazy } from "react";
+const LoginStep1 = lazy(() => import("./pages/LoginStep1"));
+const LoginStep2 = lazy(() => import("./pages/LoginStep2"));
+const Dashboard = lazy(() => import("./module/dashboard"));
 
 function App() {
   return (
