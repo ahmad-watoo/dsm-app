@@ -26,6 +26,14 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { buildMenuTree } from "../utils/buildMenuTree";
 import useWindowSize from "../hooks/useWindowSize";
+
+//  breadcrumb titles for the tabbed staff screens.
+const TAB_LABELS = {
+  staffcategory: "Staff Category",
+  staffgroup: "Staff Group",
+  staffgrade: "Staff Grade",
+};
+
 // Recursive transformation to Ant Design Menu Items
 function toAntdItems(nodes) {
   if (!Array.isArray(nodes)) return [];
@@ -143,8 +151,11 @@ export default function DashboardLayout() {
   };
 
   // Extract Page Label for Breadcrumb
+  const activeTab = searchParams.get("tab");
   const currentLabel =
-    searchParams.get("label") || searchParams.get("tab") || "Overview";
+    searchParams.get("label") ||
+    (activeTab && (TAB_LABELS[activeTab.toLowerCase()] || activeTab)) ||
+    "Overview";
 
   // Fallback Guard
   if (!currentModule) {
@@ -273,7 +284,7 @@ export default function DashboardLayout() {
                       className="flex items-center gap-1.5 text-gray-500 hover:text-indigo-600"
                     >
                       <HomeOutlined />
-                      <span>Modules</span>
+                      <span className="pl-1">Modules</span>
                     </Link>
                   ),
                 },
