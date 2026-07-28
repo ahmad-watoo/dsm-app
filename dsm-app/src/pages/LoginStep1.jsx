@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Input, Checkbox, Typography } from "antd";
+import toast from "react-hot-toast";
 import { LoadingOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -27,9 +28,11 @@ export default function LoginStep1() {
         navigate("/login/password");
       } else {
         setError(res.message || "User not found");
+        toast.error(res.message || "User not found");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Unable to validate user.");
+      setError(err?.message || "Unable to validate user.");
+      toast.error(err?.message || "Unable to validate user.");
     } finally {
       setLoading(false);
     }

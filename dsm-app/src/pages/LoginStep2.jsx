@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Input, Select, Checkbox } from "antd";
+import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -58,12 +59,15 @@ export default function LoginStep2() {
       if (res.statusCode === 200 && res.data?.loginAccessToken) {
         // res.data contains: token, loginUserModules (module tiles), loginUserMenus (sidebar tree)
         completeLogin(res.data, res.data.loginAccessToken);
+
         navigate("/modules");
       } else {
         setError(res.message || "Invalid credentials");
+        toast.error(res.message || "Invalid credentials");
       }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed.");
+      toast.error(err.response?.data?.message || "Login failed.");
     } finally {
       setLoading(false);
     }
