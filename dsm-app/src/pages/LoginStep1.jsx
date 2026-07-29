@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input, Checkbox, Typography } from "antd";
 import toast from "react-hot-toast";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -15,7 +15,12 @@ export default function LoginStep1() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { setPendingLogin } = useAuth();
+  const { setPendingLogin, isAuthenticated } = useAuth();
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/modules", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleNext = async () => {
     if (!loginId.trim()) return setError("Please enter your Login Id");

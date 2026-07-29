@@ -144,7 +144,8 @@ export default function CrudResourcePage({ resource }) {
       setLoadError(message);
       setRows([]);
       setTotal(0);
-      toast.error(message);
+
+      if (!err?.isSessionExpired) toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -175,7 +176,7 @@ export default function CrudResourcePage({ resource }) {
     load();
   };
 
-  // -------------------------------------------------------------------- form
+  // form
   const openCreate = () => {
     setEditing(null);
     form.resetFields();
@@ -231,7 +232,7 @@ export default function CrudResourcePage({ resource }) {
       if (!editing) setPage(1);
       load();
     } catch (err) {
-      toast.error(errorMessage(err, "Save failed"));
+      if (!err?.isSessionExpired) toast.error(errorMessage(err, "Save failed"));
     } finally {
       setSaving(false);
     }
@@ -252,7 +253,8 @@ export default function CrudResourcePage({ resource }) {
       );
       load();
     } catch (err) {
-      toast.error(errorMessage(err, "Delete failed"));
+      if (!err?.isSessionExpired)
+        toast.error(errorMessage(err, "Delete failed"));
     } finally {
       setDeletingKey(null);
     }
@@ -274,7 +276,8 @@ export default function CrudResourcePage({ resource }) {
       setPage(1);
       load();
     } catch (err) {
-      toast.error(errorMessage(err, "Delete failed"));
+      if (!err?.isSessionExpired)
+        toast.error(errorMessage(err, "Delete failed"));
     } finally {
       setBulkDeleting(false);
     }

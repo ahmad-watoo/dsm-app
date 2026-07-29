@@ -34,6 +34,9 @@ const TAB_LABELS = {
   staffgrade: "Staff Grade",
 };
 
+const menuKey = (n) =>
+  String(n.appProductMenuId ?? n.appMenuId ?? n.appMenuName);
+
 // Recursive transformation to Ant Design Menu Items
 function toAntdItems(nodes) {
   if (!Array.isArray(nodes)) return [];
@@ -43,7 +46,7 @@ function toAntdItems(nodes) {
     .map((n) => {
       const hasChildren = Array.isArray(n.children) && n.children.length > 0;
       return {
-        key: n.appMenuName || `menu-${n.appMenuId}`,
+        key: menuKey(n),
         label: n.appMenuDisplayName || n.appMenuName || "Menu Item",
         children: hasChildren ? toAntdItems(n.children) : undefined,
       };
@@ -93,7 +96,7 @@ export default function DashboardLayout() {
   const findNode = (nodes, key) => {
     if (!Array.isArray(nodes)) return null;
     for (const n of nodes) {
-      if (n?.appMenuName === key) return n;
+      if (n && menuKey(n) === key) return n;
       if (n?.children?.length) {
         const found = findNode(n.children, key);
         if (found) return found;
@@ -261,7 +264,7 @@ export default function DashboardLayout() {
           placement="left"
           onClose={() => setMobileOpen(false)}
           open={mobileOpen}
-          width={280}
+          size={280}
         >
           <Menu
             mode="inline"
